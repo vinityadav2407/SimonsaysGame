@@ -41,18 +41,17 @@ console.log(gameSeq);
  function checkMatch(indx){
 if(userSeq[indx]===gameSeq[indx]){
     if(userSeq.length===gameSeq.length){
-
         setTimeout(levelUp,1000);
     }
 }else{
     let body=document.querySelector("body");
     body.classList.add("danger");
     setTimeout(()=>{
-body.classList.remove("danger");
+    body.classList.remove("danger");
     },250);
 
     let h2=document.querySelector("h2");
-    heightestScore=heightestScore+level;
+    heightestScore = Math.max(heightestScore, level);
     h2.innerHTML=`Game Over! <br> Your heightest score is ${heightestScore} . <br> <b>Your current score was ${level} <b> <br> Press any key to start the game.`;
     reset();
 }
