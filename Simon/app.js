@@ -4,6 +4,7 @@ let level=0;
 let started=false;
 let heightestScore=0;
 let btns=["red","green","yellow","purple"];
+let gameOver = false;// for sound
 
 
 document.addEventListener("keypress" ,function(){
@@ -17,23 +18,38 @@ if(started===false){
 
 function btnFlash(btn){
     btn.classList.add("white");
+    let color=btn.getAttribute("id");
+
+// Only play normal sound if game is NOT over
+  if (!gameOver) {
+    playSound(color);
+  }
+  
     setTimeout(()=>{
         btn.classList.remove("white");
     },250);
 }
 //funtion
 
+// Sound mapping
+function playSound(color) {
+    let audio = new Audio(`sound/${color}.mp3`);
+    // only play if game is active
+    audio.play();
+}
+
+
  function levelUp(){
     userSeq=[];
     level++;
     let h2=document.querySelector("h2");
     h2.innerText=`Level ${level}`;
-    let randIndx=Math.floor(Math.random()*3)+1;
+    let randIndx=Math.floor(Math.random()*4);
     let randColor=btns[randIndx];
     let randbtn=document.querySelector(`.${randColor}`);
 
-gameSeq.push(randColor);
-console.log(gameSeq);
+  gameSeq.push(randColor);
+  console.log(gameSeq);
     btnFlash(randbtn);
  }
 
@@ -44,8 +60,13 @@ if(userSeq[indx]===gameSeq[indx]){
         setTimeout(levelUp,1000);
     }
 }else{
+    gameOver=true;
     let body=document.querySelector("body");
     body.classList.add("danger");
+    /// game over sound
+      let gameOverAudio =new Audio(`sound/danger.mp3`);
+       gameOverAudio.play();
+
     setTimeout(()=>{
     body.classList.remove("danger");
     },250);
@@ -77,4 +98,5 @@ function btnPress(){
     gameSeq=[];
     level=0;
     started=false;
+    gameOver = false;
  }
